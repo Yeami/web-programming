@@ -1,7 +1,30 @@
+const webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
+const devMode = process.env.NODE_ENV !== 'production';
+
+const plugins = [
+  new HtmlWebpackPlugin({
+    filename: '../index.html',
+    template: './src/index.html',
+  }),
+  new MiniCssExtractPlugin({
+    filename: devMode ? '../css/[name].css' : '../css/[name].[contenthash].css',
+    chunkFilename: devMode ? '../css/[id].css' : '../css/[id].[contenthash].css',
+  }),
+];
+
+if (devMode) {
+  plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+
 module.exports = {
+  plugins,
   entry: {
     source: './src/index.js',
   },
@@ -11,16 +34,18 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin({
-      test: /\.js(\?.*)?$/i,
-      extractComments: false,
-      parallel: true,
-      terserOptions: {
-        output: {
-          comments: false,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        extractComments: false,
+        parallel: true,
+        terserOptions: {
+          output: {
+            comments: false,
+          },
         },
-      },
-    })],
+      })],
     splitChunks: {
       chunks: 'all',
       name: 'vendor',
@@ -29,31 +54,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
-        ],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
           'sass-loader',
         ],
       },
       {
         test: /\.less$/,
         use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
+          MiniCssExtractPlugin.loader,
           'css-loader',
-          // Compiles Less to CSS
           'less-loader',
         ],
       },
