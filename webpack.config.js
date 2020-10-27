@@ -26,7 +26,7 @@ if (devMode) {
 module.exports = {
   plugins,
   entry: {
-    source: './src/index.js',
+    source: './src/app.js',
   },
   output: {
     filename: '[name].min.js',
