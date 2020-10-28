@@ -1,2 +1,2 @@
 # web-programming
-The list of laboratories works for the «Internet programming» university course
+The first laboratory work for the «Internet programming» university course for improving knowledge of the webpack, npm and node.js
