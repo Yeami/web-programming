@@ -3,6 +3,3 @@
 
 # JavaScript libraries
 node_modules
-
-# License for the production ready script
-dist/source.js.LICENSE.txt

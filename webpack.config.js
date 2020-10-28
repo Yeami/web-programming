@@ -14,8 +14,8 @@ const plugins = [
     template: './src/index.html',
   }),
   new MiniCssExtractPlugin({
-    filename: devMode ? '../css/[name].css' : '../css/[name].[contenthash].css',
-    chunkFilename: devMode ? '../css/[id].css' : '../css/[id].[contenthash].css',
+    filename: devMode ? '../css/[name].min.css' : '../css/[name].[contenthash].min.css',
+    chunkFilename: devMode ? '../css/[id].min.css' : '../css/[id].[contenthash].min.css',
   }),
 ];
 
@@ -53,6 +53,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [

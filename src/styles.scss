@@ -1,5 +1,10 @@
-$body-color: red;
+html,
+body,
+#app {
+  height: 100%;
+}
 
-.hello {
-  color: $body-color;
+body {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
 }
